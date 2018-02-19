@@ -29,7 +29,8 @@
 
 <link href="{{ asset('public-assets/plugins/owl-carousel/owl.carousel.css') }}" rel="stylesheet">
 <link href="{{ asset('public-assets/plugins/owl-carousel/owl.theme.css') }}" rel="stylesheet">
-<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+
 <link href="{{ asset('public-assets/plugins/bxslider/jquery.bxslider.css') }}" rel="stylesheet" />
 
 <link href="{{ asset('public-assets/css/custom.css') }}" rel="stylesheet">
@@ -73,7 +74,7 @@
 </div>
 
 
-<script src="http://code.jquery.com/jquery.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="{{ asset('public-assets/js/vendors.min.js') }}"></script>
 
 <script src="{{ asset('public-assets/js/script.js') }}"></script>

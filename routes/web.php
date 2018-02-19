@@ -32,7 +32,7 @@ Route::group(['prefix' => 'admin'], function () {
   Route::get('/password/reset', 'AdminAuth\ForgotPasswordController@showLinkRequestForm')->name('password.reset');
   Route::get('/password/reset/{token}', 'AdminAuth\ResetPasswordController@showResetForm');
 });
-
+/*
 Route::group(['prefix' => 'employee'], function () {
   Route::get('/login', 'EmployeeAuth\LoginController@showLoginForm')->name('login');
   Route::post('/login', 'EmployeeAuth\LoginController@login');
@@ -46,23 +46,18 @@ Route::group(['prefix' => 'employee'], function () {
   Route::get('/password/reset', 'EmployeeAuth\ForgotPasswordController@showLinkRequestForm')->name('password.reset');
   Route::get('/password/reset/{token}', 'EmployeeAuth\ResetPasswordController@showResetForm');
 });
+*/
 
-Route::group(['prefix' => 'client'], function () {
-  Route::get('/login', 'ClientAuth\LoginController@showLoginForm')->name('client.login');
-  Route::post('/login', 'ClientAuth\LoginController@login')->name('process.client.login');
 
-  Route::get('/logout', 'ClientAuth\LoginController@logout')->name('client.logout');
-
-  Route::get('/register', 'ClientAuth\RegisterController@showRegistrationForm')->name('client.register');
-  Route::post('/register', 'ClientAuth\RegisterController@register')->name('save.client.register');
-  Route::get('/confirm-email/{token}', 'ClientAuth\RegisterController@confirmEmail')->name('client.email_confirm');
-
-  Route::post('/password/email', 'ClientAuth\ForgotPasswordController@sendResetLinkEmail')->name('client.password.request');
-  Route::post('/password/reset', 'ClientAuth\ResetPasswordController@reset')->name('client.password.email');
-  Route::get('/password/reset', 'ClientAuth\ForgotPasswordController@showLinkRequestForm')->name('client.password.reset');
-  Route::get('/password/reset/{token}', 'ClientAuth\ResetPasswordController@showResetForm');
+Route::group(['prefix' => 'user'], function () {
+  Route::get('/login', ['uses' => 'Auth\LoginController@showLoginForm', 'as' => 'login']);
+  Route::post('/login', 'Auth\LoginController@login');
+  Route::post('/logout', 'Auth\LoginController@logout')->name('logout');
 });
 
+Route::get('/login', 'Auth\LoginController@showLoginForm')->name('login');
+Route::post('/login', 'Auth\LoginController@login');
+Route::post('/login/refresh', 'Auth\LoginController@refresh');
 
 Route::group(['prefix' => 'user'], function () {
   Route::get('/login', 'Auth\LoginController@showLoginForm')->name('user.login');
@@ -106,3 +101,30 @@ Route::group(['prefix' => 'projects'], function () {
       'uses' => 'User\Projects\ProjectsController@show'
   ]);
 });
+
+Route::group(['prefix' => 'profile'], function () {
+  Route::get('/', [
+      'as' => 'profiles',
+      'middleware' => ['auth'],
+      'uses' => 'User\Profiles\ProfilesController@view'
+  ]);
+
+  Route::get('/create', [
+      'as' => 'profile.create',
+      'middleware' => ['auth'],
+      'uses' => 'User\Profiles\ProfilesController@create'
+  ]);
+
+  Route::post('/save', [
+      'as' => 'profile.store',
+      'middleware' => ['auth'],
+      'uses' => 'User\Profiles\ProfilesController@store'
+  ]);
+
+  Route::get('/{category_name}/{project_slug}', [
+      'as' => 'profile.view',
+      'middleware' => ['auth'],
+      'uses' => 'User\Profiles\ProfilesController@show'
+  ]);
+});
+

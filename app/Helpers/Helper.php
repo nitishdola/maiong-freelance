@@ -2,6 +2,7 @@
 
 namespace App\Helpers;
 use DB, Validator, Redirect, Auth, Crypt;
+use App\Models\Profile\UserProfile;
 class Helper
 {
     public static function shout(string $string)
@@ -73,5 +74,9 @@ class Helper
 					->where('sub_categories.status',1)
 					->select('categories.name as categoryName', 'categories.id as categoryId', 'sub_categories.name as subCategoryName', 'sub_categories.id as subCategoryId')
 					->get();
+	}
+
+	public static function saveProfileData($data) {
+		
 	}
 }

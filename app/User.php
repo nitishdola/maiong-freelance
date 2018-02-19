@@ -1,10 +1,11 @@
 <?php
 
 namespace App;
-use Laravel\Passport\HasApiTokens;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+
+use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable
 {
@@ -20,10 +21,10 @@ class User extends Authenticatable
     ];
 
     public static $rules = [
-        'name'      => 'required|min:3',       
-        'email'     => 'required|unique:clients|email',       
+        'name'      => 'required|min:3',
+        'email'     => 'required|unique:clients|email',
         'password'  => 'required|min:6|required',
-        'password_confirmation' => 'required|min:6|same:password'    
+        'password_confirmation' => 'required|min:6|same:password'
     ];
 
     /**
