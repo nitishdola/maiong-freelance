@@ -18,6 +18,12 @@ use Illuminate\Http\Request;
 });
 */
 
+
+Route::get('/user-list', [
+    'as' => 'mail.user.list',
+    'uses' => 'REST\ApiController@mailApiUsers'
+]);
+
 Route::get('/category', [
     'as' => 'category.index',
     'uses' => 'REST\ApiController@categoryIndex'
@@ -64,26 +70,56 @@ Route::group(['prefix' => 'profile'], function () {
 });
 
 
-Route::group(['prefix' => 'profile'], function () {
+Route::group(['prefix' => 'user'], function () {
     Route::get('/my-profiles', [
         'uses' => 'REST\Profile\User\ProfileController@viewMyProfiles'
     ]);
 
-    Route::get('/create', [
-        'as' => 'profile.create',
-        'uses' => 'REST\Profile\ProfileController@create'
-    ]);
-
-    Route::post('/save', [
-        'as' => 'profile.store',
-        'uses' => 'REST\Profile\ProfileController@store'
-    ]);
-
-    Route::get('/{profile_name}/{profile_slug}', [
+    Route::get('/profile', [
         'as' => 'profile.view',
-        'uses' => 'REST\Profile\ProfileController@show'
+        'uses' => 'REST\Profile\User\ProfileController@myProfile'
     ]);
+
+    Route::group(['prefix' => 'message'], function () {
+      /*Route::get('/compose', [
+        'as' => 'api.profile.message.compose',
+        'uses' => 'REST\Profile\User\MessageController@composeMail'
+      ]);*/
+
+      Route::post('/send', [
+        'as' => 'api.profile.message.send',
+        'uses' => 'REST\Profile\User\MessageController@sendMail'
+      ]);
+
+      Route::get('/inbox', [
+        'as' => 'api.profile.message.inbox',
+        'uses' => 'REST\Profile\User\MessageController@mailBox'
+      ]);
+
+      Route::get('/sent', [
+        'as' => 'api.profile.message.sent',
+        'uses' => 'REST\Profile\User\MessageController@sentBox'
+      ]);
+
+      Route::get('/trash', [
+        'as' => 'api.profile.message.trash',
+        'uses' => 'REST\Profile\User\MessageController@trashBox'
+      ]);
+
+      Route::get('/make-read', [
+        'as' => 'api.profile.message.make_read',
+        'uses' => 'REST\Profile\User\MessageController@makeRead'
+      ]);
+
+      Route::get('/send-to-trash', [
+        'as' => 'api.profile.message.send_to_trash',
+        'uses' => 'REST\Profile\User\MessageController@sendToTrash'
+      ]);
+
+    });
 });
+
+
 
 Route::get('todos', 'REST\UserAuthApiController@todo')->middleware('auth:api');
 

@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Helper;
 use DB, Validator, Redirect, Auth, Crypt;
 use App\Models\Master\Category;
-use App\Models\Project\Project;
+use App\Models\Profile\UserProfile;
 class PublicController extends Controller
 {
     public function viewHome() {
@@ -24,8 +24,8 @@ class PublicController extends Controller
     	if($category_slug != null) {
     		$category = Category::where('slug', $category_slug)->first();
     		if($category) {
-    			$projects = Project::where('category_id')->where('status',1)->get();
-    			return view('public.view_jobs_by_category', compact('jobs'));
+    			$user_profiles = UserProfile::where('category_id',$category->id)->with('profile_locations', 'profile_images')->where('status',1)->get();
+    			return view('public.view_jobs_by_category', compact('user_profiles', 'category'));
     		}
     	}
     	return Redirect::route('public.view_categories');

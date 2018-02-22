@@ -8,7 +8,7 @@ use App\Http\Controllers\Controller;
 use Helper;
 use DB, Validator, Redirect, Auth, Crypt;
 
-use App\Models\Profile\UserProfile, App\Models\Profile\ProfileImage, App\Models\Profile\ProfileLocation; 
+use App\Models\Profile\UserProfile, App\Models\Profile\ProfileImage, App\Models\Profile\ProfileLocation;
 
 use App\Http\Requests\ProfileImageUploadRequest;
 class ProfilesController extends Controller
@@ -54,14 +54,9 @@ class ProfilesController extends Controller
             $data['user_id']    = Auth::id();
 
             $validator = Validator::make($data, UserProfile::$rules);
-            
+
             if ($validator->fails()) return  Redirect::back()->withErrors($validator)->withInput();
-            /*foreach ($validator->messages()->getMessages() as $field_name => $messages)
-            {
-                var_dump($messages); // messages are retrieved (publicly)
-                $message['errors'][] = $message;
-            }
-            */
+            
             $profile = UserProfile::create( $data );
         }catch(ValidationException $e)
         {
@@ -75,7 +70,10 @@ class ProfilesController extends Controller
             if(!empty($files)):
                 foreach ($files as $photo) {
                     $image_data = [];
-                    $filename = $photo->store(config('globals.profile_file_store_path'));
+                    $filename       = strtolower(md5(uniqid().time())).'.'.$file->getClientOriginalExtension();
+
+                    $destinationPath = config('globals.profile_file_store_path');
+                    Storage::disk('uploads')->put($destinationPath . $filename ,file_get_contents($file));
 
                     $image_data['user_profile_id']  = $profile->id;
                     $image_data['image_path']       = $filename;
@@ -100,7 +98,7 @@ class ProfilesController extends Controller
                 $latitudes  = $request->latitudes;
                 foreach ($localities as $k => $locality) {
                     $locality_data = [];
-                    
+
                     $locality_data['user_profile_id']  = $profile->id;
 
                     $locality_data['latitude']      = $latitudes[$k];

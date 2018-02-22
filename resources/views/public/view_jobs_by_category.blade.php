@@ -156,8 +156,7 @@
          <div class="tab-box clearfix ">
             <div class="col-lg-12  box-title no-border">
                <div class="inner">
-                  <h2><span> Software </span> Engineer
-                     <small> 1000+ Jobs Found</small>
+                  <h2><span> {{ $category->name }} </span>
                   </h2>
                </div>
             </div>
@@ -191,35 +190,37 @@
                </select>
             </div>
          </div>
-         <div class="listing-filter hidden-xs">
-            <div class="pull-left col-sm-6 col-xs-12">
-               <div class="breadcrumb-list text-center-xs">
-                  <a class="jobs-s-tag" rel="nofollow" title="Software Architect">Software
-                  Engineer </a>
-                  in <a rel="nofollow" class="jobs-s-tag"> New York</a>
-               </div>
-            </div>
-            <div class="pull-right col-sm-6 col-xs-12 text-right text-center-xs listing-view-action">
-               <a class="clear-all-button text-muted">Clear all</a>
-            </div>
-            <div style="clear:both"></div>
-         </div>
+         
+
          <div class="adds-wrapper jobs-list">
+
+            @foreach($user_profiles as $k => $v)
             <div class="item-list job-item">
-               <div class="col-sm-1  col-xs-2 no-padding photobox">
-                  <div class="add-image"><a href="#"><img class="thumbnail no-margin" src="images/jobs/company-logos/1.jpg" alt="company logo"></a></div>
+               <div class="col-sm-12  col-xs-12 no-padding photobox">
+                  @foreach($v->profile_images as $imagekey => $image)
+                     @if($imagekey == 0) {{ dump($image) }}
+                     <div class="add-image">
+                        <a href="#">
+                           <img class="thumbnail no-margin" src="{{ $image->image_path }}" alt="company logo">
+                        </a>
+                     </div>
+                     @endif
+                  @endforeach
                </div>
                <div class="col-sm-10  col-xs-10  add-desc-box">
                   <div class="add-details jobs-item">
-                     <h5 class="company-title "><a href="#">CO Engineering</a></h5>
-                     <h4 class="job-title"><a href="job-details.html"> Front-end Developer </a></h4>
-                     <span class="info-row"> <span class="item-location"><i class="fa fa-map-marker"></i> New York, NY </span> <span class="date"><i class=" icon-clock"> </i>Full-time</span><span class=" salary"> <i class=" icon-money"> </i> $50000 - $81000 a year</span></span>
+                     <h4 class="job-title"><a href="job-details.html"> {{ $v->profile_title }}</a></h4>
+                     <span class="info-row">
+                        @foreach($v->profile_locations as $location)
+                           <span class="item-location"><i class="fa fa-map-marker"></i> {{ $location->name }} </span> 
+                        @endforeach
+                     </span>
                      <div class="jobs-desc">
-                        A Web Tester / Developer with experience in PHP, HTML, CSS and
-                        JavaScript is needed to join a global music services company.
+                        {{ str_limit($v->profile_description, 200) }}
                      </div>
                      <div class="job-actions">
                         <ul class="list-unstyled list-inline">
+                           <!-- 
                            <li>
                               <a href="#" class="save-job">
                               <span class="fa fa-star-o"></span>
@@ -231,11 +232,12 @@
                               <span class="fa fa-star"></span>
                               Saved Job
                               </a>
-                           </li>
+                           </li> 
+                           -->
                            <li>
                               <a class="email-job" href="#">
                               <i class="fa fa-envelope"></i>
-                              Email Job
+                              Send Message
                               </a>
                            </li>
                         </ul>
@@ -243,261 +245,12 @@
                   </div>
                </div>
             </div>
-            <div class="item-list job-item">
-               <div class="col-sm-1  col-xs-2 no-padding photobox">
-                  <div class="add-image"><a href="#"><img class="thumbnail no-margin" src="images/jobs/company-logos/2.jpg" alt="company logo"></a></div>
-               </div>
-               <div class="col-sm-10  col-xs-10  add-desc-box">
-                  <div class="add-details jobs-item">
-                     <h5 class="company-title "><a href="#">XIAO Co.</a></h5>
-                     <h4 class="job-title"><a href="job-details.html">UI/UX Front-End Web
-                        Developer </a>
-                     </h4>
-                     <span class="info-row"> <span class="item-location"><i class="fa fa-map-marker"></i> New York, NY </span> <span class="date"><i class=" icon-clock"> </i>Full-time</span><span class=" salary"> <i class=" icon-money"> </i> $10000 - $23000 a year</span></span>
-                     <div class="jobs-desc"> We are seeking a talented UI/UX Front End Web Developer
-                        to design, develop, support web app software. UI/UX Front-End Web
-                        Developer....
-                     </div>
-                     <div class="job-actions">
-                        <ul class="list-unstyled list-inline">
-                           <li>
-                              <a href="#" class="save-job">
-                              <span class="fa fa-star-o"></span>
-                              Save Job
-                              </a>
-                           </li>
-                           <li class="saved-job hide">
-                              <a class="saved-job" href="#">
-                              <span class="fa fa-star"></span>
-                              Saved Job
-                              </a>
-                           </li>
-                           <li>
-                              <a class="email-job" href="#">
-                              <i class="fa fa-envelope"></i>
-                              Email Job
-                              </a>
-                           </li>
-                        </ul>
-                     </div>
-                  </div>
-               </div>
-            </div>
-            <div class="item-list job-item">
-               <div class="col-sm-1  col-xs-2 no-padding photobox">
-                  <div class="add-image"><a href="#"><img class="thumbnail no-margin" src="images/jobs/company-logos/23.jpg" alt="company logo"></a></div>
-               </div>
-               <div class="col-sm-10  col-xs-10  add-desc-box">
-                  <div class="add-details jobs-item">
-                     <h5 class="company-title "><a href="#">Thatherton Fuels</a></h5>
-                     <h4 class="job-title"><a href="job-details.html">Javascript Developer</a></h4>
-                     <span class="info-row"> <span class="item-location"><i class="fa fa-map-marker"></i> New York, NY </span> <span class="date"><i class=" icon-clock"> </i>Contract </span><span class=" salary"> <i class=" icon-money"> </i>$50.00 - $60.00 / Hr</span></span>
-                     <div class="jobs-desc">You’re obsessed with creating scalable applications using
-                        Java. 5+ years of professional coding experience with Java. PKI and Security
-                        Software....
-                     </div>
-                     <div class="job-actions">
-                        <ul class="list-unstyled list-inline">
-                           <li>
-                              <a href="#" class="save-job">
-                              <span class="fa fa-star-o"></span>
-                              Save Job
-                              </a>
-                           </li>
-                           <li class="saved-job hide">
-                              <a class="saved-job" href="#">
-                              <span class="fa fa-star"></span>
-                              Saved Job
-                              </a>
-                           </li>
-                           <li>
-                              <a class="email-job" href="#">
-                              <i class="fa fa-envelope"></i>
-                              Email Job
-                              </a>
-                           </li>
-                        </ul>
-                     </div>
-                  </div>
-               </div>
-            </div>
-            <div class="item-list job-item">
-               <div class="col-sm-1  col-xs-2 no-padding photobox">
-                  <div class="add-image"><a href="#"><img class="thumbnail no-margin" src="images/jobs/company-logos/4.jpg" alt="company logo"></a></div>
-               </div>
-               <div class="col-sm-10  col-xs-10  add-desc-box">
-                  <div class="add-details jobs-item">
-                     <h5 class="company-title "><a href="#">Praxis corporation</a></h5>
-                     <h4 class="job-title"><a href="job-details.html">Web Developer Jr. - Front
-                        End</a>
-                     </h4>
-                     <span class="info-row"> <span class="item-location"><i class="fa fa-map-marker"></i> Barrington, IL</span> <span class="date"><i class=" icon-clock"> </i>Full-time</span><span class=" salary"> <i class=" icon-money"> </i> $20000 - $41000 a year</span></span>
-                     <div class="jobs-desc"> Our developers work out of our offices in New York,
-                        Washington DC, Los Angeles, Oakland, Boston, and London. We're looking for a
-                        front-end web developer to join...
-                     </div>
-                     <div class="job-actions">
-                        <ul class="list-unstyled list-inline">
-                           <li>
-                              <a href="#" class="save-job">
-                              <span class="fa fa-star-o"></span>
-                              Save Job
-                              </a>
-                           </li>
-                           <li class="saved-job hide">
-                              <a class="saved-job" href="#">
-                              <span class="fa fa-star"></span>
-                              Saved Job
-                              </a>
-                           </li>
-                           <li>
-                              <a class="email-job" href="#">
-                              <i class="fa fa-envelope"></i>
-                              Email Job
-                              </a>
-                           </li>
-                        </ul>
-                     </div>
-                  </div>
-               </div>
-            </div>
-            <div class="item-list job-item">
-               <div class="col-sm-1  col-xs-2 no-padding photobox">
-                  <div class="add-image"><a href="#"><img class="thumbnail no-margin" src="images/jobs/company-logos/5.jpg" alt="company logo"></a></div>
-               </div>
-               <div class="col-sm-10  col-xs-10  add-desc-box">
-                  <div class="add-details jobs-item">
-                     <h5 class="company-title "><a href="#">Bluth Company</a></h5>
-                     <h4 class="job-title"><a href="job-details.html">UI/Web Developer</a></h4>
-                     <span class="info-row"> <span class="item-location"><i class="fa fa-map-marker"></i> New York, NY </span> <span class="date"><i class=" icon-clock"> </i>Full-time</span><span class=" salary"> <i class=" icon-money"> </i> $50000 - $70000 a year</span></span>
-                     <div class="jobs-desc"> Delivering a complete front end application. We are
-                        looking for an AngularJS/Web Developer responsible for the client side of
-                        our service....
-                     </div>
-                     <div class="job-actions">
-                        <ul class="list-unstyled list-inline">
-                           <li>
-                              <a href="#" class="save-job">
-                              <span class="fa fa-star-o"></span>
-                              Save Job
-                              </a>
-                           </li>
-                           <li class="saved-job hide">
-                              <a class="saved-job" href="#">
-                              <span class="fa fa-star"></span>
-                              Saved Job
-                              </a>
-                           </li>
-                           <li>
-                              <a class="email-job" href="#">
-                              <i class="fa fa-envelope"></i>
-                              Email Job
-                              </a>
-                           </li>
-                        </ul>
-                     </div>
-                  </div>
-               </div>
-            </div>
-            <div class="item-list job-item">
-               <div class="col-sm-1  col-xs-2 no-padding photobox">
-                  <div class="add-image"><a href="#"><img class="thumbnail no-margin" src="images/jobs/company-logos/17.jpg" alt="company logo"></a></div>
-               </div>
-               <div class="col-sm-10  col-xs-10  add-desc-box">
-                  <div class="add-details jobs-item">
-                     <h5 class="company-title "><a href="#">Data Systems Ltd.</a></h5>
-                     <h4 class="job-title"><a href="job-details.html">Full Stack Engineer,
-                        International</a>
-                     </h4>
-                     <span class="info-row"> <span class="item-location"><i class="fa fa-map-marker"></i> Mountain View, OR</span> <span class="date"><i class=" icon-clock"> </i>Full-time</span><span class=" salary"> <i class=" icon-money"> </i> $30000 - $51000 a year</span></span>
-                     <div class="jobs-desc"> You believe in the transformative power education brings
-                        to people's lives, and know how to create the code that will further
-                        opportunities for these lifelong...
-                     </div>
-                     <div class="job-actions">
-                        <ul class="list-unstyled list-inline">
-                           <li>
-                              <a href="#" class="save-job">
-                              <span class="fa fa-star-o"></span>
-                              Save Job
-                              </a>
-                           </li>
-                           <li class="saved-job hide">
-                              <a class="saved-job" href="#">
-                              <span class="fa fa-star"></span>
-                              Saved Job
-                              </a>
-                           </li>
-                           <li>
-                              <a class="email-job" href="#">
-                              <i class="fa fa-envelope"></i>
-                              Email Job
-                              </a>
-                           </li>
-                        </ul>
-                     </div>
-                  </div>
-               </div>
-            </div>
-            <div class="item-list job-item">
-               <div class="col-sm-1  col-xs-2 no-padding photobox">
-                  <div class="add-image"><a href="#"><img class="thumbnail no-margin" src="images/jobs/company-logos/14.jpg" alt="company logo"></a></div>
-               </div>
-               <div class="col-sm-10  col-xs-10  add-desc-box">
-                  <div class="add-details jobs-item">
-                     <h5 class="company-title "><a href="#">Videlectrix Ltd.</a></h5>
-                     <h4 class="job-title"><a href="job-details.html">Java Engineer </a></h4>
-                     <span class="info-row"> <span class="item-location"><i class="fa fa-map-marker"></i> San Francisco </span> <span class="date"><i class=" icon-clock"> </i>Full-time</span><span class=" salary"> <i class=" icon-money"> </i> $30000 - $51000 a year</span></span>
-                     <div class="jobs-desc"> Java C/C++, Python. 5+ years of backend software
-                        development experience. Projects include real time data synchronization,
-                        identity management, large...
-                     </div>
-                     <div class="job-actions">
-                        <ul class="list-unstyled list-inline">
-                           <li>
-                              <a href="#" class="save-job">
-                              <span class="fa fa-star-o"></span>
-                              Save Job
-                              </a>
-                           </li>
-                           <li class="saved-job hide">
-                              <a class="saved-job" href="#">
-                              <span class="fa fa-star"></span>
-                              Saved Job
-                              </a>
-                           </li>
-                           <li>
-                              <a class="email-job" href="#">
-                              <i class="fa fa-envelope"></i>
-                              Email Job
-                              </a>
-                           </li>
-                        </ul>
-                     </div>
-                  </div>
-               </div>
-            </div>
+            @endforeach
+
          </div>
-         <div class="tab-box  save-search-bar text-center"><a href="#"> <i class=" icon-star-empty"></i>
-            Save Search </a>
-         </div>
+         
       </div>
-      <div class="pagination-bar text-center">
-         <ul class="pagination">
-            <li class="active"><a href="#">1</a></li>
-            <li><a href="#">2</a></li>
-            <li><a href="#">3</a></li>
-            <li><a href="#">4</a></li>
-            <li><a href="#">5</a></li>
-            <li><a href="#"> ...</a></li>
-            <li><a class="pagination-btn" href="#">Next &raquo;</a></li>
-         </ul>
-      </div>
-      <div class="post-promo text-center">
-         <h2> Looking for a job? </h2>
-         <h5> Upload your CV and easily apply to jobs from any device! </h5>
-         <a href="#" class="btn btn-lg btn-border btn-post btn-danger">Upload your CV </a>
-      </div>
+      
    </div>
 </div>
 </div>

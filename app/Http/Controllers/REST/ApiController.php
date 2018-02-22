@@ -18,6 +18,16 @@ class ApiController extends Controller
     	
     }
 
+    public function mailApiUsers(Request $request) {
+        $id = $request->id;
+        if($request->dump == 'yes') {
+            return Response::json(DB::table('users')->where('status',1)->get(), $status=200, $headers=[], $options=JSON_PRETTY_PRINT);   
+        }else{
+            return DB::table('users')->select('id', 'name', 'email')->where('id', '!=', $id)->where('is_email_confirmed',1)->get();    
+        }
+        
+    }
+
     public function subCategoryIndex(Request $request) {
     	$where = [];
     	if($request->category_id) {

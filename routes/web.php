@@ -128,3 +128,38 @@ Route::group(['prefix' => 'profile'], function () {
   ]);
 });
 
+
+Route::group(['prefix' => 'user'], function () {
+  Route::group(['prefix' => 'message'], function () {
+    Route::get('/compose', [
+        'as' => 'user.message.compose',
+        'middleware' => ['auth'],
+        'uses' => 'User\Message\MessagesController@compose'
+    ]);
+
+    Route::post('/send', [
+        'as' => 'user.message.send',
+        'middleware' => ['auth'],
+        'uses' => 'User\Message\MessagesController@send'
+    ]);
+  });
+});
+
+
+Route::get('storage/{filename}', function ($filename)
+{
+    $path = storage_path('public/' . $filename);
+
+    if (!File::exists($path)) {
+        abort(404);
+    }
+
+    $file = File::get($path);
+    $type = File::mimeType($path);
+
+    $response = Response::make($file, 200);
+    $response->header("Content-Type", $type);
+
+    return $response;
+});
+

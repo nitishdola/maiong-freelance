@@ -6,9 +6,9 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 use Helper;
-use DB, Validator, Redirect, Auth, Crypt;
+use DB, Validator, Redirect, Auth, Crypt,Storage;
 
-use App\Models\Profile\UserProfile, App\Models\Profile\ProfileImage, App\Models\Profile\ProfileLocation; 
+use App\Models\Profile\UserProfile, App\Models\Profile\ProfileImage, App\Models\Profile\ProfileLocation;
 
 use App\Http\Requests\ProfileImageUploadRequest;
 
@@ -21,7 +21,7 @@ class ProfileController extends Controller
      */
     public function index()
     {
-        //return 
+        //return
     }
 
     /**
@@ -31,7 +31,7 @@ class ProfileController extends Controller
      */
     public function create(Request $request)
     {
-        
+
 
     }
 
@@ -64,7 +64,7 @@ class ProfileController extends Controller
             }else{
                 $profile = UserProfile::create( $data );
             }
-            
+
         }catch(ValidationException $e)
         {
             return Redirect::back();
@@ -80,19 +80,23 @@ class ProfileController extends Controller
                     if ($request->file('image'.$i)->isValid()){
                         $file           = $request->file('image'.$i);
 
-                        $filename       = strtolower(uniqid()).'.'.$file->getClientOriginalExtension();
+
+
+
+                        $filename       = strtolower(md5(uniqid().time())).'.'.$file->getClientOriginalExtension();
 
                         $destinationPath = config('globals.profile_file_store_path');
-                        $file->move($destinationPath.'/',$filename);
+                        Storage::disk('uploads')->put($destinationPath . $filename ,file_get_contents($file));
 
-                        if(DB::table('profile_images')->insert(
-                            [
+                        if(
+
+                            ProfileImage::create([
                                 'user_profile_id' => $profile->id,
-                                'image_path' => $filename, 
-                            ]
-                        )) 
+                                'image_path' => $filename,
+                            ])
+                        )
                         {
-                          //  
+                          //
                         }else{
                             $json_return['error'] = true;
                             $json_return['errors'][] = 'Unable to upload file !';
@@ -129,16 +133,16 @@ class ProfileController extends Controller
 
                 foreach ($localities as $k => $locality) {
                     $locality_data = [];
-                    
+
                     $locality_data['user_profile_id']  = $profile->id;
-                     
+
                     $longitudes = json_decode($request->longitudes);
                     $latitudes  = json_decode($request->longitudes);
 
                     $locality_data['latitude']      = $latitudes[$k];
                     $locality_data['longitude']     = $longitudes[$k];
                     $locality_data['name']          = $locality;
-                    
+
                     ProfileLocation::create($locality_data);
                 }
             else:

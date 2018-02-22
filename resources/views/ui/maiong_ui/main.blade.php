@@ -79,10 +79,7 @@
 
 <script src="{{ asset('public-assets/js/script.js') }}"></script>
 
-<script type="text/javascript" src="{{ asset('public-assets/plugins/autocomplete/jquery.mockjax.js') }}"></script>
-<script type="text/javascript" src="{{ asset('public-assets/plugins/autocomplete/jquery.autocomplete.js') }}"></script>
 <script type="text/javascript" src="{{ asset('public-assets/plugins/autocomplete/usastates.js') }}"></script>
-<script type="text/javascript" src="{{ asset('public-assets/plugins/autocomplete/autocomplete-demo.js') }}"></script>
 @yield('pageJs')
 </body>
 </html>
