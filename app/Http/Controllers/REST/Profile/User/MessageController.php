@@ -10,7 +10,7 @@ use App\Models\Message\Message;
 use DB, Validator;
 class MessageController extends Controller
 {
-    public function sendMail(Request $request) { 
+    public function sendMail(Request $request) {
     	$json_return = [];
         DB::beginTransaction();
         /* Insert data to profiles table */
@@ -55,7 +55,7 @@ class MessageController extends Controller
 
     public function mailBox(Request $request) {
         $user_id    = $request->user_id;
-        return Message::with('sender', 'receiver', 'profile', 'reply')->where('sender_id', $user_id)->where('status', 1)->get();
+        return Message::with('sender', 'receiver', 'profile', 'reply')->where('sender_id', $user_id)->where('deleted_from_receiver',0)->where('status', 1)->get();
     }
 
     public function sentBox(Request $request) {
@@ -69,22 +69,43 @@ class MessageController extends Controller
     }
 
     public function makeRead(Request $request) {
+        $json_return = [];
         $message_id = $request->message_id;
         $msg = Message::find($message_id);
         $msg->is_read = 1;
         if($msg->save()) {
-            return true;
+
+        $json_return['success'] = true;
+        }else{
+
+        $json_return['success'] = false;
         }
-        return false;
+        return json_encode($json_return);
     }
 
     public function sendToTrash(Request $request) {
+        $json_return = [];
         $message_id = $request->message_id;
+        $delete_type    = $request->delete_type;
+
         $msg = Message::find($message_id);
-        $msg->is_read = 0;
-        if($msg->save()) {
-            return true;
+
+        if($delete_type == 'sender_del') {
+            $msg->deleted_from_sender = 1;
+        }elseif($delete_type == 'receiver_del'){
+            $msg->deleted_from_receiver = 1;
+        }else{
+            $json_return['success'] = false;
+            return json_encode($json_return);
         }
-        return false;
+
+        if($msg->save()) {
+
+          $json_return['success'] = true;
+        }else{
+
+          $json_return['success'] = false;
+        }
+        return json_encode($json_return);
     }
 }

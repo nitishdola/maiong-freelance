@@ -6,9 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class ProjectImage extends Model
 {
-    protected $fillable = array('project_id', 'image_path');
-	protected $table    = 'project_images';
-    protected $guarded  = ['_token'];
+     protected $fillable = array('project_id', 'image_path');
+	   protected $table    = 'project_images';
+     protected $guarded  = ['_token'];
 
     /*public static $rules = [
     	'project_id' 	=> 'required|exists:projects,id',
@@ -24,7 +24,7 @@ class ProjectImage extends Model
         foreach(range(0, $photos) as $index) {
             $rules['photos.' . $index] = 'image|mimes:jpeg,bmp,png|max:2000';
         }
- 
+
         return $rules;
     }
 }

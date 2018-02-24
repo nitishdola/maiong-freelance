@@ -24,9 +24,20 @@ Route::get('/user-list', [
     'uses' => 'REST\ApiController@mailApiUsers'
 ]);
 
+Route::get('/user-list-by-name', [
+    'as' => 'mail.user.list.by_name',
+    'uses' => 'REST\ApiController@mailApiUsersByName'
+]);
+
 Route::get('/category', [
     'as' => 'category.index',
     'uses' => 'REST\ApiController@categoryIndex'
+]);
+
+
+Route::get('/top-categories', [
+    'as' => 'category.top',
+    'uses' => 'REST\ApiController@topCategories'
 ]);
 
 Route::get('/sub-category', [
@@ -66,6 +77,29 @@ Route::group(['prefix' => 'profile'], function () {
   Route::get('/{profile_name}/{profile_slug}', [
       'as' => 'profile.view',
       'uses' => 'REST\Profile\ProfileController@show'
+  ]);
+});
+
+
+Route::group(['prefix' => 'project'], function () {
+  Route::get('/', [
+      'as' => 'projects',
+      'uses' => 'REST\Project\ProjectsController@view'
+  ]);
+
+  Route::get('/create', [
+      'as' => 'profile.create',
+      'uses' => 'REST\Project\ProjectsController@create'
+  ]);
+
+  Route::post('/save', [
+      'as' => 'profile.store',
+      'uses' => 'REST\Project\ProjectsController@store'
+  ]);
+
+  Route::get('/packages', [
+      'as' => 'projects.packages',
+      'uses' => 'REST\Project\ProjectsController@packages'
   ]);
 });
 

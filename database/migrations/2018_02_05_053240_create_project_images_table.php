@@ -16,6 +16,7 @@ class CreateProjectImagesTable extends Migration
         Schema::create('project_images', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('project_id', false, true);
+            $table->string('image_path', 127);
             $table->boolean('status')->default(1);
             $table->timestamps();
 
