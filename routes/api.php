@@ -40,6 +40,11 @@ Route::get('/top-categories', [
     'uses' => 'REST\ApiController@topCategories'
 ]);
 
+Route::get('/get-profiles', [
+    'as' => 'profiles',
+    'uses' => 'REST\ApiController@getProfiles'
+]);
+
 Route::get('/sub-category', [
     'as' => 'sub_category.index',
     'uses' => 'REST\ApiController@subCategoryIndex'

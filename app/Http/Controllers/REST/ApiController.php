@@ -8,6 +8,7 @@ use Helper;
 use DB, Validator, Redirect, Auth, Crypt, Response;
 
 use App\Models\Master\Category;
+use App\Models\Profile\UserProfile;
 
 class ApiController extends Controller
 {
@@ -61,6 +62,21 @@ class ApiController extends Controller
         $limit = $request->limit;
       }
       return $categories = Category::inRandomOrder()->withCount('profiles')->limit($limit)->get();
+    }
+
+    public function getProfiles(Request $request) {
+      $limit = 10;
+      $where = [];
+      if($request->limit) {
+        $limit = $request->limit;
+      }
+
+      if($request->category_id) {
+        $category_id = $request->category_id;
+        $where['category_id'] = $category_id;
+      }
+
+      return UserProfile::where($where)->whereStatus(1)->with('user', 'category', 'profile_images', 'profile_locations')->inRandomOrder()->limit($limit)->get();
     }
 
 
