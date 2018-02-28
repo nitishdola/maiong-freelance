@@ -156,6 +156,23 @@ Route::group(['prefix' => 'user'], function () {
       ]);
 
     });
+
+    Route::group(['prefix' => 'inquiry'], function () {
+      Route::post('/send', [
+        'as' => 'api.profile.inquiry.send',
+        'uses' => 'REST\Profile\User\InquiryController@send'
+      ]);
+
+      Route::get('/', [
+        'as' => 'api.profile.inquiry.view_all',
+        'uses' => 'REST\Profile\User\InquiryController@viewAll'
+      ]);
+
+      Route::get('/view', [
+        'as' => 'api.profile.inquiry.view',
+        'uses' => 'REST\Profile\User\InquiryController@send'
+      ]);
+    });
 });
 
 
