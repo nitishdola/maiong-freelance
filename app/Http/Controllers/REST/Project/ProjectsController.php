@@ -9,7 +9,7 @@ use App\Models\Project\Project;
 
 use Helper;
 use DB, Validator, Redirect, Auth, Crypt, Storage;
-use App\Models\Project\ProjectImage;
+use App\Models\Project\ProjectImage, App\Models\Project\ProjectLocation;
 use App\Http\Requests\ProjectImageUploadRequest;
 
 class ProjectsController extends Controller
@@ -97,6 +97,7 @@ class ProjectsController extends Controller
       }
 
       try {
+		  /*
           $locality = $request->locality;
           if($locality):
 
@@ -108,6 +109,35 @@ class ProjectsController extends Controller
               $json_return['errors'][] = 'No Locality Selected !';
               return json_encode($json_return);
           endif;
+		  */
+		  
+		  
+			$localities = json_decode($request->localities);
+            //dd(json_decode($localities));
+            if($localities):
+                $longitudes = $request->longitudes;
+                $latitudes  = $request->latitudes;
+
+                foreach ($localities as $k => $locality) {
+                    $locality_data = [];
+
+                    
+
+                    $longitudes = json_decode($request->longitudes);
+                    $latitudes  = json_decode($request->longitudes);
+					
+					$locality_data['project_id']  	= $project->id;
+                    $locality_data['latitude']      = $latitudes[$k];
+                    $locality_data['longitude']     = $longitudes[$k];
+                    $locality_data['name']          = $locality;
+
+                    if(!ProjectLocation::create($locality_data)) {
+						$json_return['error'] = true;
+                        $json_return['errors'][] = 'Unable to add localities !';
+						return json_encode($json_return);
+					}
+                }
+            endif;
 
           // Validate, then create if valid
       } catch(ValidationException $e)
