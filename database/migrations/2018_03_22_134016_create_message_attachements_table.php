@@ -15,8 +15,6 @@ class CreateMessageAttachementsTable extends Migration
     {
         Schema::create('message_attachements', function (Blueprint $table) {
             $table->increments('id');
-
-            $table->increments('id');
 			      $table->integer('message_id', false, true);
 			      $table->string('file_path', 255);
             $table->boolean('status')->default(1);
