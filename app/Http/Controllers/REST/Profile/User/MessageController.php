@@ -44,6 +44,50 @@ class MessageController extends Controller
             return Redirect::back();
         }
 
+        try {
+            //loop through the items enteres
+
+            $filesize = $request->filesize;
+            for($i=1; $i <= $filesize; $i++):
+                if ($request->hasFile('file'.$i)) {
+
+                    if ($request->file('file'.$i)->isValid()){
+                        $file           = $request->file('file'.$i);
+
+                        $filename       = strtolower(md5(uniqid().time())).'.'.$file->getClientOriginalExtension();
+
+                        $destinationPath = config('globals.message_file_store_path');
+                        Storage::disk('uploads')->put($destinationPath . $filename ,file_get_contents($file));
+
+                        if(
+
+                            MessageAttachement::create([
+                                'message_id'  => $message->id,
+                                'file_path'   => $destinationPath . $filename,
+                            ])
+                        )
+                        {
+                          //
+                        }else{
+                            $json_return['error'] = true;
+                            $json_return['errors'][] = 'Unable to upload file !';
+                        }
+                    }
+                }
+            endfor;
+
+
+
+            // Validate, then create if valid
+        } catch(ValidationException $e)
+        {
+            // Back to form
+            //return Redirect::back();
+            $json_return['error'] = true;
+            $json_return['errors'][] = 'Unexpected error occurred!';
+            return json_encode($json_return);
+        }
+
         // Commit the queries!
         DB::commit();
 
