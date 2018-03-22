@@ -20,9 +20,7 @@ class CreateMessageAttachementsTable extends Migration
             $table->boolean('status')->default(1);
             $table->timestamps();
 
-			     $table->foreign('message_id')->references('id')->on('messages')->onDelete('cascade');
-
-            $table->timestamps();
+			      $table->foreign('message_id')->references('id')->on('messages')->onDelete('cascade');
         });
     }
 
