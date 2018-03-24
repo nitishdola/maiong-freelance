@@ -5,7 +5,7 @@ namespace App\Http\Controllers\REST\Profile\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-use App\Models\Message\Message;
+use App\Models\Message\Message, App\Models\Message\MessageAttachement;
 
 use DB, Validator, Storage;
 class MessageController extends Controller
