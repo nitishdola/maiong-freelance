@@ -7,13 +7,13 @@ use App\Http\Controllers\Controller;
 
 use App\Models\Message\Message;
 
-use DB, Validator;
+use DB, Validator, Storage;
 class MessageController extends Controller
 {
-    public function sendMail(Request $request) {
+    public function sendMail(Request $request) {dd($request);
     	$json_return = [];
         DB::beginTransaction();
-        /* Insert data to profiles table */
+        /* Insert data to messages table */
         try {
             // Validate, then create if valid
             $data = $request->except('files', '_token');
@@ -48,33 +48,35 @@ class MessageController extends Controller
             //loop through the items enteres
 
             $filesize = $request->filesize;
-            for($i=1; $i <= $filesize; $i++):
-                if ($request->hasFile('file'.$i)) {
+            if($filesize):
+              for($i=1; $i <= $filesize; $i++):
+                  if ($request->hasFile('file'.$i)) {
 
-                    if ($request->file('file'.$i)->isValid()){
-                        $file           = $request->file('file'.$i);
+                      if ($request->file('file'.$i)->isValid()){
+                          $file           = $request->file('file'.$i);
 
-                        $filename       = strtolower(md5(uniqid().time())).'.'.$file->getClientOriginalExtension();
+                          $filename       = strtolower(md5(uniqid().time())).'.'.$file->getClientOriginalExtension();
 
-                        $destinationPath = config('globals.message_file_store_path');
-                        Storage::disk('uploads')->put($destinationPath . $filename ,file_get_contents($file));
+                          $destinationPath = config('globals.message_file_store_path');
+                          Storage::disk('uploads')->put($destinationPath . $filename ,file_get_contents($file));
 
-                        if(
+                          if(
 
-                            MessageAttachement::create([
-                                'message_id'  => $message->id,
-                                'file_path'   => $destinationPath . $filename,
-                            ])
-                        )
-                        {
-                          //
-                        }else{
-                            $json_return['error'] = true;
-                            $json_return['errors'][] = 'Unable to upload file !';
-                        }
-                    }
-                }
-            endfor;
+                              MessageAttachement::create([
+                                  'message_id'  => $message->id,
+                                  'file_path'   => $destinationPath . $filename,
+                              ])
+                          )
+                          {
+                            //
+                          }else{
+                              $json_return['error'] = true;
+                              $json_return['errors'][] = 'Unable to upload file !';
+                          }
+                      }
+                  }
+              endfor;
+            endif;
 
 
 
