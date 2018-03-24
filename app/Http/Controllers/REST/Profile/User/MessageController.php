@@ -10,7 +10,7 @@ use App\Models\Message\Message;
 use DB, Validator, Storage;
 class MessageController extends Controller
 {
-    public function sendMail(Request $request) {dd($request);
+    public function sendMail(Request $request) { //dd($request);
     	$json_return = [];
         DB::beginTransaction();
         /* Insert data to messages table */
