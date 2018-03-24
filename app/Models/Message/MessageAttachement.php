@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class MessageAttachement extends Model
 {
   protected $fillable = array('message_id', 'file_path' );
-  protected $table    = 'messages';
+  protected $table    = 'message_attachements';
   protected $guarded  = ['_token'];
 
   public static $rules = [
