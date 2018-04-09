@@ -79,5 +79,14 @@ class ApiController extends Controller
       return UserProfile::where($where)->whereStatus(1)->with('user', 'category', 'profile_images', 'profile_locations')->inRandomOrder()->limit($limit)->get();
     }
 
+    public function allSkills(Request $request) {
+      $order_by = 'ASC';
+      if($request->order_by) {
+        $order_by = $request->order_by;
+      }
+
+      return DB::table('skills')->orderBy('name', $order_by)->select('id', 'name')->where('status',1)->get();
+    }
+
 
 }

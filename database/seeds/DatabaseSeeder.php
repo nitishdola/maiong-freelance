@@ -11,7 +11,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call(AdminTableSeeder::class);
+        //$this->call(AdminTableSeeder::class);
+        $this->call('Skills');
     }
 }
 
@@ -21,6 +22,8 @@ class AdminTableSeeder extends Seeder {
   {
     DB::table('admins')->insert(array(
       array('name'=>'Administrator', 'username' => 'maiong', 'password' => bcrypt('Maiong@4321##')),
-    )); 
+    ));
+
+    
   }
 }

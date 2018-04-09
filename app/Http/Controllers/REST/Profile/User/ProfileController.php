@@ -29,4 +29,6 @@ class ProfileController extends Controller
     public function sendMail(Request $request) {
         return $request->sender_id;
     }
+
+    
 }

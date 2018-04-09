@@ -24,6 +24,11 @@ Route::get('/user-list', [
     'uses' => 'REST\ApiController@mailApiUsers'
 ]);
 
+Route::get('/skill-list', [
+    'as' => 'skill.list',
+    'uses' => 'REST\ApiController@allSkills'
+]);
+
 Route::get('/user-list-by-name', [
     'as' => 'mail.user.list.by_name',
     'uses' => 'REST\ApiController@mailApiUsersByName'
@@ -110,6 +115,11 @@ Route::group(['prefix' => 'project'], function () {
 
 
 Route::group(['prefix' => 'user'], function () {
+
+    Route::get('/', [
+        'uses' => 'REST\UsersController@view'
+    ]);
+
     Route::get('/my-profiles', [
         'uses' => 'REST\Profile\User\ProfileController@viewMyProfiles'
     ]);
@@ -179,6 +189,6 @@ Route::group(['prefix' => 'user'], function () {
 
 Route::get('todos', 'REST\UserAuthApiController@todo')->middleware('auth:api');
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
+/*Route::middleware('auth:api')->get('/user', function (Request $request) {
     return 'asdasd';
-});
+});*/
