@@ -68,6 +68,14 @@ Route::post('/logout', [
 ]);
 
 
+Route::post('/send-otp-to-verify-number', [
+    'uses' => 'REST\UsersController@sendOTPtoVerify'
+]);
+
+Route::post('/validate-otp', [
+    'uses' => 'REST\UsersController@verifyOTP'
+]);
+
 Route::group(['prefix' => 'profile'], function () {
   Route::get('/', [
       'as' => 'profiles',
@@ -127,6 +135,22 @@ Route::group(['prefix' => 'user'], function () {
     Route::get('/profile', [
         'as' => 'profile.view',
         'uses' => 'REST\Profile\User\ProfileController@myProfile'
+    ]);
+
+    Route::post('/update-skills', [
+      'uses' => 'REST\UsersController@updateSkills'
+    ]);
+
+    Route::post('/update-certificates', [
+      'uses' => 'REST\UsersController@updateCertificates'
+    ]); 
+
+    Route::post('/change-my-mood', [
+      'uses' => 'REST\UsersController@userMoodChange'
+    ]);
+
+    Route::post('/change-my-password', [
+      'uses' => 'REST\UsersController@changePassword'
     ]);
 
     Route::group(['prefix' => 'message'], function () {

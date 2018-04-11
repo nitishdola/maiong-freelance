@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddOfflineFlagUsers extends Migration
+class AddMobileConfirmationFields extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,8 @@ class AddOfflineFlagUsers extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->boolean('is_user_offline')->default(0)->after('is_email_confirmed');
+            $table->string('mobile_number_confirmation_code', 127)->nullable()->after('mobile_number');
+            $table->boolean('is_mobile_number_confirmed')->default(0)->after('mobile_number_confirmation_code');
         });
     }
 

@@ -49,6 +49,16 @@ class Helper
 	    return ($slugCount > 0) ? "{$slug}-{$slugCount}" : $slug;
 	}
 
+	public static function generateOTP() {
+		$a = '';
+		for ($i = 0; $i<6; $i++) 
+		{
+		    $a .= mt_rand(0,9);
+		}
+
+		return $a;
+	}
+
 
 	public static function projectSlugGhost($slug = null) {
 		$c = DB::table('projects')->where('slug', trim($slug))->count();
@@ -78,5 +88,24 @@ class Helper
 
 	public static function saveProfileData($data) {
 		
+	}
+
+	public static function sendSMS($message, $mobilenumbers) {
+		$user 		= config('globals.sms_username');
+		$password	= config('globals.sms_password');
+		$senderid	= config('globals.sms_head');
+		
+		$url 		= config('globals.sms_url');
+		$message 	= urlencode($message);
+		
+
+		$m 			= '91' . $mobilenumbers;
+		$mobileno 	= $m;
+
+		$ch 		= curl_init($url."?user=$user&password=$password&mobiles=$m&sms=".$message);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		$ch     	= curl_exec($ch);
+
+		return $ch;
 	}
 }
