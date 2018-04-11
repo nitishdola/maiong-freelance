@@ -14,8 +14,8 @@ class ProfileController extends Controller
 {
     public function viewMyProfiles(Request $request) {
     	$user_id = $request->user_id;
-    	$user_active_profiles = UserProfile::where('user_id', $user_id)->with('category')->select('id', 'profile_title')->where('status',1)->get();
-    	$user_disabled_profiles = UserProfile::where('user_id', $user_id)->with('category')->select('id', 'profile_title')->where('status',0)->get();
+    	$user_active_profiles = UserProfile::where('user_id', $user_id)->with('category')->select('id', 'profile_title')->where('is_profile_offline',0)->get();
+    	$user_disabled_profiles = UserProfile::where('user_id', $user_id)->with('category')->select('id', 'profile_title')->where('is_profile_offline',1)->get();
 
     	return json_encode(['active_profiles' => $user_active_profiles, 'disabled_profiles' => $user_disabled_profiles]);
     }

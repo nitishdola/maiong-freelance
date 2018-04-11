@@ -96,6 +96,10 @@ Route::group(['prefix' => 'profile'], function () {
       'as' => 'profile.view',
       'uses' => 'REST\Profile\ProfileController@show'
   ]);
+
+  Route::post('/change-mood', [
+      'uses' => 'REST\Profile\ProfileController@changeMood'
+  ]);
 });
 
 

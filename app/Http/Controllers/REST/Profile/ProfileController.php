@@ -12,6 +12,8 @@ use App\Models\Profile\UserProfile, App\Models\Profile\ProfileImage, App\Models\
 
 use App\Http\Requests\ProfileImageUploadRequest;
 
+use App\User;
+
 class ProfileController extends Controller
 {
     /**
@@ -213,5 +215,36 @@ class ProfileController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function changeMood(Request $request) {
+        if($request->user_id && $request->user_profile_id):
+            $user_id            = $request->user_id;
+            $user_profile_id    = $request->user_profile_id;
+
+            if($user = User::find($user_id)):
+                if($user_profile = UserProfile::where(['id' => $user_profile_id, 'user_id' => $user_id])->first()):
+                    $mood = $request->mood;
+                    $user_profile->is_profile_offline = $mood;
+                    $user_profile->save();
+
+                    $json_return['error']   = false;
+                    $json_return['mood']    = (int)$mood;
+                    $json_return['message'] = 'Successfull !';
+                else:
+                    $json_return['error']   = true;
+                    $json_return['message'] = 'Invalid Profile !';
+                endif;
+            else:
+                $json_return['error']   = true;
+                $json_return['message'] = 'Invalid User !';
+            endif;
+        else:
+            $json_return['error']   = true;
+            $json_return['message'] = 'Not enough parameter passed !';
+        endif;
+
+
+        return json_encode($json_return);
     }
 }
