@@ -163,4 +163,19 @@ class ProfilesController extends Controller
     {
         //
     }
+
+    public function search(Request $request) {
+        $take = 10;
+        $skip = 0;
+
+        if($request->take) {
+            $take = $request->take;
+        }
+
+        if($request->skip) {
+            $skip = $request->skip;
+        }
+
+        return UserProfile::with('user', 'category', 'profile_images', 'profile_locations')->take($take)->skip($skip)->get();
+    }
 }

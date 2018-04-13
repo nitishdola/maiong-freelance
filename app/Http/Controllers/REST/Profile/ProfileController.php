@@ -201,9 +201,146 @@ class ProfileController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
-        //
+    public function update(ProfileImageUploadRequest $request) 
+    { 
+        $json_return = [];
+        DB::beginTransaction();
+        /* update data to profiles table */
+        try {
+            // Validate, then update if valid
+
+
+            $id         = $request->user_profile_id;
+            $user_id    = $request->user_id;
+
+            $user = User::find($user_id);
+
+            $data = $request->except('files', '_token');
+
+            if($request->profile_title):
+                $slug               = Helper::getUniqueSlug(new UserProfile(), $request->profile_title);
+                $data['slug']       = $slug;
+            endif;
+
+
+            $profile = UserProfile::findOrFail($id); 
+
+            if($user_id == $profile->user_id):
+                $profile->fill($data);
+
+                $profile->save();
+            else:
+                $json_return['error'] = true;
+                $json_return['errors'][] = 'Not your profile';
+
+                return json_encode($json_return);
+            endif;
+
+
+        }catch(ValidationException $e)
+        {
+            $json_return['error'] = true;
+            $json_return['errors'][] = 'Exception error';
+
+            return json_encode($json_return);
+        }
+
+        try {
+            //loop through the items enteres
+
+            $imagesize = $request->imagesize;
+
+            if($imagesize > 0):
+                for($i=1; $i <= $imagesize; $i++):
+                    if ($request->hasFile('image'.$i)) {
+
+                        if ($request->file('image'.$i)->isValid()){
+                            $file           = $request->file('image'.$i);
+
+                            $filename       = strtolower(md5(uniqid().time())).'.'.$file->getClientOriginalExtension();
+
+                            $destinationPath = config('globals.profile_file_store_path');
+                            Storage::disk('uploads')->put($destinationPath . $filename ,file_get_contents($file));
+
+                            if(
+
+                                ProfileImage::create([
+                                    'user_profile_id' => $profile->id,
+                                    'image_path' => $filename,
+                                ])
+                            )
+                            {
+                              //
+                            }else{
+                                $json_return['error'] = true;
+                                $json_return['errors'][] = 'Unable to upload file !';
+                                return json_encode($json_return);
+                            }
+                        }
+                    }
+                endfor;
+            endif;
+
+
+
+            // Validate, then create if valid
+        } catch(ValidationException $e)
+        {
+            // Back to form
+            //return Redirect::back();
+            $json_return['error'] = true;
+            $json_return['errors'][] = 'Unexpected error occurred!';
+            return json_encode($json_return);
+        }
+
+        try {
+            //loop through the locations entered
+            //return $request;
+            $localities = json_decode($request->localities);
+
+            if(count($localities)):
+                if($localities):
+                    $longitudes = $request->longitudes;
+                    $latitudes  = $request->latitudes;
+
+                    foreach ($localities as $k => $locality) {
+                        $locality_data = [];
+
+                        $locality_data['user_profile_id']  = $profile->id;
+
+                        $longitudes = json_decode($request->longitudes);
+                        $latitudes  = json_decode($request->longitudes);
+
+                        $locality_data['latitude']      = $latitudes[$k];
+                        $locality_data['longitude']     = $longitudes[$k];
+                        $locality_data['name']          = $locality;
+
+                        ProfileLocation::create($locality_data);
+                    }
+                else:
+                    $json_return['error'] = true;
+                    $json_return['errors'][] = 'No Locality Selected !';
+                    return json_encode($json_return);
+                endif;
+            endif;
+
+            // Validate, then create if valid
+        } catch(ValidationException $e)
+        {
+            // Back to form
+            //return Redirect::back();
+            $json_return['error'] = true;
+            $json_return['errors'][] = 'Unexpected error occurred!';
+            return json_encode($json_return);
+        }
+
+        // Commit the queries!
+        DB::commit();
+
+        $json_return['error']   = false;
+        $json_return['success'] = true;
+        $json_return['msg'][] = 'Profile updated successfully !';
+        return json_encode($json_return);
     }
 
     /**

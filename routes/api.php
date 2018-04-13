@@ -92,6 +92,10 @@ Route::group(['prefix' => 'profile'], function () {
       'uses' => 'REST\Profile\ProfileController@store'
   ]);
 
+  Route::post('/update', [
+      'uses' => 'REST\Profile\ProfileController@update'
+  ]);
+
   Route::get('/{profile_name}/{profile_slug}', [
       'as' => 'profile.view',
       'uses' => 'REST\Profile\ProfileController@show'
@@ -123,6 +127,29 @@ Route::group(['prefix' => 'project'], function () {
       'as' => 'projects.packages',
       'uses' => 'REST\Project\ProjectsController@packages'
   ]);
+
+  Route::group(['prefix' => 'order'], function () {
+    Route::post('/place', [
+        'uses' => 'REST\Orders\OrdersController@placeOrder'
+    ]);
+
+    Route::get('/my-projects', [
+        'uses' => 'REST\Orders\OrdersController@myProjects'
+    ]);
+
+    Route::post('/accept-order', [
+        'uses' => 'REST\Orders\OrdersController@acceptOrder'
+    ]);
+
+    Route::post('/seller/confirm-order', [
+        'uses' => 'REST\Orders\OrdersController@deliverOrderBySeller'
+    ]);
+
+    Route::post('/buyer/confirm-order', [
+        'uses' => 'REST\Orders\OrdersController@deliverOrderByBuyer'
+    ]);
+
+  });
 });
 
 
@@ -130,6 +157,10 @@ Route::group(['prefix' => 'user'], function () {
 
     Route::get('/', [
         'uses' => 'REST\UsersController@view'
+    ]);
+
+    Route::post('/update-gcm', [
+        'uses' => 'REST\UsersController@updateMyGCM'
     ]);
 
     Route::get('/my-profiles', [

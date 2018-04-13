@@ -11,6 +11,43 @@ use DB, Validator, Redirect, Auth, Crypt, Hash, Helper;
 
 class UsersController extends Controller
 {
+
+    public function updateMyGCM(Request $request) { 
+        if($request->user_id):
+            $user_id    = $request->user_id;
+            $gcm        = $request->gcm;
+
+            $user       = User::find($user_id);
+
+            if($user): 
+                $user->gcm = $gcm;
+
+                //check if $gcm already exists
+                if(!User::where(['gcm' => $gcm])->whereNotIn('id', [$user_id])->count()): 
+                    if($user->save()) {
+                        $json_return['error']   = false;
+                        $json_return['gcm']     = $gcm;
+                    }else{
+                        $json_return['error']   = true;
+                        $json_return['message'] = 'Something went wrong ! Please try again';
+                    }
+                else:
+                    $json_return['error']       = true;
+                    $json_return['message']     = 'GCM Number already exists !';
+                endif;
+            else:
+                $json_return['error']       = true;
+                $json_return['message']     = 'Invalid User';
+            endif;
+        else:
+            $json_return['error']       = true;
+            $json_return['message']     = 'No user found !';
+        endif;
+
+        return json_encode($json_return);
+    }
+
+
     public function userMoodChange(Request $request) {
     	if($request->user_id):
 	    	$user_id 	= $request->user_id;

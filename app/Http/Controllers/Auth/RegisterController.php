@@ -112,6 +112,8 @@ class RegisterController extends Controller
         if($confirm) {
             $confirm->email_confirmation_code = '';
             $confirm->is_email_confirmed = 1;
+
+            $confirm->member_since = date('Y-m-d');
             $confirm->save();
 
             Auth::login($confirm);

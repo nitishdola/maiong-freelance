@@ -126,6 +126,12 @@ Route::group(['prefix' => 'profile'], function () {
       'middleware' => ['auth'],
       'uses' => 'User\Profiles\ProfilesController@show'
   ]);
+
+  Route::get('/search', [
+      'as' => 'profile.search',
+      'uses' => 'User\Profiles\ProfilesController@search'
+  ]);
+
 });
 
 

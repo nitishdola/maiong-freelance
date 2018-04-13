@@ -19,12 +19,12 @@ class CreateOrdersTable extends Migration
             $table->integer('buyer_id', false, true);
             
             $table->integer('seller_id', false, true);
-            $table->integer('seller_profile_id', false, true);
+            $table->integer('user_profile_id', false, true);
 
             $table->decimal('project_cost', 30,2);
 
             $table->date('order_date');
-            $table->date('expected_delivery_date');
+            $table->date('expected_delivery_date')->nullable();
             $table->date('project_delivery_date')->nullable();
 
             $table->string('order_current_status', 50)->default('order_placed');
@@ -36,13 +36,13 @@ class CreateOrdersTable extends Migration
             $table->boolean('payment_status')->default(0);
             $table->boolean('project_delivered')->default(0);
 
-            $table->boolean('status')->default(0);
+            $table->boolean('status')->default(1);
 
             $table->timestamps();
 
             $table->foreign('buyer_id', 'buyfk')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('seller_id', 'selfk')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('user_profile_id', 'userprofk')->references('id')->on('user_profiles')->onDelete('cascade');
         });
     }
 
